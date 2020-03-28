@@ -1,3 +1,4 @@
+import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
@@ -13,22 +14,25 @@ import xlsxwriter
 from flask import send_file
 
 # see https://dash.plot.ly/external-resources to alter header, footer and favicon
-app.index_string = ''' 
+
+app.index_string = '''
 <!DOCTYPE html>
 <html>
     <head>
         {%metas%}
-        <title>Stark Performance Marketing Report</title>
+        <title>{%title%}</title>
         {%favicon%}
         {%css%}
     </head>
     <body>
+        <div>My Custom header</div>
         {%app_entry%}
         <footer>
             {%config%}
             {%scripts%}
+            {%renderer%}
         </footer>
-        <div>Stark Performance Marketing Report</div>
+        <div>My Custom footer</div>
     </body>
 </html>
 '''
@@ -37,6 +41,8 @@ app.layout = html.Div([
     dcc.Location(id='url', refresh=False),
     html.Div(id='page-content')
 ])
+
+print(app.__repr__)
 
 # Update page
 # # # # # # # # #
@@ -57,6 +63,7 @@ def display_page(pathname):
         return layout_metasearch
     else:
         return noPage
+
 
 # # # # # # # # #
 # detail the way that external_css and external_js work and link to alternative method locally hosted
